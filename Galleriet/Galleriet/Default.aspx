@@ -20,6 +20,7 @@
             <asp:ValidationSummary ID="ValidationSummary" runat="server" HeaderText="Fel inträffade! Korrigera felet och försök igen." />
             <asp:Button ID="UploadButton" runat="server" Text="Ladda upp" OnClick="UploadButton_Click" />
 
+            <%-- Thumbnagelsrepeater--%>
             <asp:Repeater ID="ThumbRepeater" runat="server" ItemType="Galleriet.Model.ThumbPic" SelectMethod="ThumbRepeater_GetData">
                 <ItemTemplate>
                     <asp:HyperLink ID="HyperLink" runat="server">
