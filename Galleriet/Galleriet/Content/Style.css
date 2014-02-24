@@ -1,1 +1,33 @@
-﻿
+﻿#ThumbRepeaterPanel {
+    width: 500px;
+    height: 60px;
+    overflow-y: hidden;
+    white-space: nowrap;
+    margin-bottom: 15px;
+    margin-top: 10px;
+}
+
+#ValidationSummary {
+    color: red;
+}
+
+#main {
+    height: 665px;
+}
+
+#BigImage {
+    height: 400px;
+    width: 500px;
+}
+
+#ButtonPanel {
+    width: 500px;
+}
+
+#SuccessLabel {
+    color: green;
+}
+
+#ClosePanel {
+    margin-bottom: 10px;
+}
