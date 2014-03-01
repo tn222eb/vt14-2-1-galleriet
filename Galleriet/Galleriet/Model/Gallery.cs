@@ -63,42 +63,38 @@ namespace Galleriet.Model
         // Publik metod som verifierar, kontrollerar, sparar bilden samt skapar och sparar en tumnagelbild
         public string SaveImage(Stream stream, string fileName)
         {
-            fileName = SantizePath.Replace(fileName, String.Empty);
+            if (ApprovedExtensions.IsMatch(fileName))
+            {
+                var image = System.Drawing.Image.FromStream(stream);
 
-          
-                if (ApprovedExtensions.IsMatch(fileName))
+                if (!IsValidImage(image))
                 {
-                    var image = System.Drawing.Image.FromStream(stream);
-                    var thumbnail = image.GetThumbnailImage(60, 45, null, System.IntPtr.Zero);
+                    throw new ApplicationException("Bilden är inte av typen png, gif eller jpg.");
+                }
 
-                    if (ImageExists(fileName))
+                fileName = SantizePath.Replace(fileName, String.Empty);
+                if (ImageExists(fileName))
+                {
+                    var imageName = Path.GetFileNameWithoutExtension(fileName);
+                    var imageExtension = Path.GetExtension(fileName);
+                    int i = 1;
+
+                    while (ImageExists(fileName))
                     {
-                        var imageName = Path.GetFileNameWithoutExtension(fileName);
-                        var imageExtension = Path.GetExtension(fileName);
-                        int i = 1;
-
-                        while (ImageExists(fileName))
-                        {
-                            fileName = String.Format("{0}{1}{2}", imageName, i++, imageExtension);
-                        }
-                    }
-
-                    if (IsValidImage(image))
-                    {
-                        image.Save(Path.Combine(PhysicalUploadImagePath, fileName));
-                        thumbnail.Save(PhysicalUploadImagePath + "/Thumbnails/" + fileName);
-                    }
-
-                    else
-                    {
-                        throw new ApplicationException("Bilden är inte av typen png, gif eller jpg.");
+                        fileName = String.Format("{0}{1}{2}", imageName, i++, imageExtension);
                     }
                 }
-                else
-                {
-                    throw new ApplicationException("Filen har inte giltig filändelse");
-                }
-            
+
+                image.Save(Path.Combine(PhysicalUploadImagePath, fileName));
+
+                var thumbnail = image.GetThumbnailImage(60, 45, null, System.IntPtr.Zero);
+                thumbnail.Save(Path.Combine(PhysicalUploadImagePath, "Thumbnails", fileName));
+            }
+            else
+            {
+                throw new ApplicationException("Filen har inte giltig filändelse");
+            }
+
 
             return fileName;
 

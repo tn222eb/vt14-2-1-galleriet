@@ -45,7 +45,7 @@ namespace Galleriet
             {
                 ClosePanel.Visible = true;
                 SuccessLabel.Text = Message;
-                Session.Clear();
+                Session.Remove("Message");
             }
         }
 
